@@ -1,0 +1,6 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "zi",
+  "version": "1.0.0",
+  "description": "Community agent: curates trusted community knowledge, verifies events, adapts content per channel, helps members, and routes to humans with approval gates on every sensitive action"
+}

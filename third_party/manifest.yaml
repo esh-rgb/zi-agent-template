@@ -1,0 +1,44 @@
+# Machine-readable record of third-party components.
+#
+# This file is intentionally empty of copied components: the template contains no
+# third-party code. See LICENSE_AUDIT.md for the audit and THIRD_PARTY_NOTICES.md
+# for the human-readable version.
+#
+# Add an entry ONLY when code, assets, or text are actually copied or adapted into
+# this repository. Targeting an interface or reading documentation is not a
+# component. An entry may not ship while review_status is UNVERIFIED.
+
+components: []
+
+# Template for a future entry:
+#
+# components:
+#   - name: example-library
+#     source: "https://github.com/owner/repo"
+#     version_or_commit: "v1.2.3"
+#     license: "MIT"
+#     license_file_verified: true      # read from the upstream LICENSE file itself
+#     copied_or_adapted: copied        # copied | adapted
+#     files_or_patterns_used: ["src/thing.mjs"]
+#     required_attribution: "Copyright (c) 2026 Owner"
+#     dependencies_reviewed: true      # including transitive
+#     public_repo_allowed: true
+#     review_status: VERIFIED          # UNVERIFIED | VERIFIED
+#     reviewed_by: "<name>"
+#     reviewed_at: "2026-09-04"
+
+# Interfaces targeted, recorded for accuracy. Not components; no obligations attach.
+interfaces:
+  - name: nanoclaw
+    relationship: "template is stamped by this runtime; no code included"
+    upstream_license: "MIT"
+    license_file_verified: true
+  - name: agent-plugins
+    relationship: "plugin.json declares conformance to the 1.0.0 schema, referenced by URL"
+    upstream_license: "specification, not code"
+    license_file_verified: false
+
+dependencies:
+  runtime: []
+  development: []
+  note: "Scripts and tests use only the Node.js standard library."

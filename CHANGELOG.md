@@ -7,6 +7,23 @@ that runs.
 
 ### Changed
 
+- **Zi is now specified as an orchestration layer**, not a single agent that does
+  everything itself: intent resolution, just-in-time context, delegation to a
+  closed list of specialists, tool discovery per task, and a community data layer
+  as the source of truth. This reverses the earlier "no specialists" decision —
+  the reasoning behind that decision is why the specialist list is closed and
+  short, but the product target changed, so routing is now part of the design.
+  Added `orchestration.md`, `data-layer.md`, `onboarding.md`, the
+  `intent-routing` and `onboarding-continuity` skills, and
+  `docs/end-to-end-scenario.md`.
+- `docs/architecture.md` now separates **locked** (shipped and verified) from
+  **open** (contract defined, implementation not shipped), because a template
+  ships no database and no web app and the difference should not be blurred.
+- `docs/trust-model.md` states that a shared community data layer is a deliberate
+  crossing of the context isolation boundary, and what an operator must scope to
+  keep two trust boundaries rather than one.
+- Zi's acknowledgment reaction is 🌶️ where a channel supports reactions —
+  classified Level A, and explicitly never readable as approval or sign-off.
 - Registry category moved from the placeholder `community` to `ops`
   (`templates/community/zi` → `templates/ops/zi`). Verified directly against
   `nanocoai/nanoclaw-templates`: its precedented categories are single

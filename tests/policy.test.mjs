@@ -122,3 +122,78 @@ test('AI disclosure is required and impersonation is barred', () => {
   assert.match(persona, /never claims to be a person/i);
   assert.match(persona, /never signs as the operator/);
 });
+
+// --- Round 6: orchestration, data layer, onboarding, signature reaction ---
+
+const orchestration = read(path.join(ctx, 'additional_context', 'orchestration.md'));
+const dataLayer = read(path.join(ctx, 'additional_context', 'data-layer.md'));
+const onboarding = read(path.join(ctx, 'additional_context', 'onboarding.md'));
+
+test('the signature reaction is documented and is not an approval signal', () => {
+  const persona = read(path.join(ctx, 'additional_context', 'persona.md'));
+  assert.match(persona, /🌶️/);
+  assert.match(persona, /never a substitute for an actual answer/);
+  // The one real risk: a reaction sitting near approval language reading as sign-off.
+  assert.match(persona, /a reaction is tone, never a decision/);
+  assert.match(persona, /must never be read as sign-off/);
+});
+
+test('just-in-time context is stated as fetch-not-carry', () => {
+  assert.match(orchestration, /Context is fetched, not carried/);
+  assert.match(orchestration, /Specialists share state, not conversations/);
+});
+
+test('specialists receive references, never transcripts', () => {
+  assert.match(orchestration, /passes \*references\*/);
+  assert.match(orchestration, /does not receive the transcript/);
+});
+
+test('the specialist list is closed, not open-ended', () => {
+  assert.match(orchestration, /Do \*\*not\*\* invent a new specialist/);
+  assert.match(orchestration, /prefer a skill/);
+});
+
+test('delegation never widens permission', () => {
+  assert.match(orchestration, /Delegation never widens permission/);
+  assert.match(orchestration, /not a task that escaped the Critic/i);
+});
+
+test('tools are discovered per task, not globally exposed', () => {
+  assert.match(orchestration, /Tools are discovered, not globally exposed/);
+});
+
+test('the data layer gates personal data on recorded consent', () => {
+  assert.match(dataLayer, /Consent is an entity, not an assumption/);
+  assert.match(dataLayer, /No record, no transfer/);
+  assert.match(dataLayer, /A membership is not a consent/);
+});
+
+test('the data layer is declared a contract, not a shipped store', () => {
+  assert.match(dataLayer, /contract, not implementation/i);
+  assert.match(dataLayer, /ships no database/);
+});
+
+test('onboarding creates minimum viable context, not a full profile', () => {
+  assert.match(onboarding, /Minimum viable context/);
+  assert.match(onboarding, /Never re-ask what onboarding already answered/);
+});
+
+test('the linking token is treated as a credential', () => {
+  assert.match(onboarding, /never log it/i);
+  assert.match(onboarding, /never accept one that arrives inside message content/);
+});
+
+test('architecture separates locked from open, and does not overclaim', () => {
+  const arch = read(path.join(root, 'docs', 'architecture.md'));
+  assert.match(arch, /### Locked — shipped and verified/);
+  assert.match(arch, /### Open — contract defined, implementation not shipped/);
+  // The reversal must be stated, not silently swapped.
+  assert.match(arch, /This reverses an earlier decision/);
+});
+
+test('the trust model admits the data layer crosses isolation', () => {
+  const trust = read(path.join(root, 'docs', 'trust-model.md'));
+  assert.match(trust, /deliberate hole in the isolation/i);
+  assert.match(trust, /stops being absolute/);
+  assert.match(trust, /It should be a knowing one/);
+});

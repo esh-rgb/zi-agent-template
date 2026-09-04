@@ -67,11 +67,12 @@ resource management · human routing · follow-up · recurring routines.
 explained recommendations · "add this to my calendar" with explicit confirmation ·
 human help on request · full control over what Zi remembers.
 
-## Nine skills
+## Eleven skills
 
-`trust-boundary` · `trusted-source-verification` · `community-brain` ·
-`content-adapter` · `human-handoff` · `calendar-action` · `referral-directory` ·
-`privacy-controls` · `budget-awareness`
+`intent-routing` · `trust-boundary` · `trusted-source-verification` ·
+`community-brain` · `content-adapter` · `human-handoff` · `calendar-action` ·
+`referral-directory` · `privacy-controls` · `onboarding-continuity` ·
+`budget-awareness`
 
 The Critic is deliberately **not** a skill — it lives in the always-loaded
 instructions so it cannot be skipped by failing to trigger.
@@ -93,6 +94,10 @@ Read this before relying on it.
 - **No credentials.** This template declares no MCP servers and needs no keys.
   Channels and tools are installed by NanoClaw's own skills.
 - Zi writes video scripts. It does not produce video.
+- **Parts of the architecture are contract, not shipped code.** The community
+  data layer, specialists as separate runtimes, and the onboarding/activation
+  surface are specified but not implemented — a template ships no database and no
+  web app. `docs/architecture.md` marks precisely what is locked and what is open.
 
 [`docs/trust-model.md`](docs/trust-model.md) states all of this in full.
 
@@ -104,6 +109,7 @@ Read this before relying on it.
 | [Trust model](docs/trust-model.md) | Guaranteed vs. behavioral, threats in and out of scope |
 | [VM deployment](docs/vm-deployment.md) | Exact install steps and troubleshooting |
 | [Demo scenarios](docs/demo-scenarios.md) | Five flows plus ten adversarial probes |
+| [End-to-end scenario](docs/end-to-end-scenario.md) | One person, discovery through completed action |
 | [Connector contract](connectors/contract/README.md) | How a connector must be declared |
 | [Legal templates](docs/legal/) | Eleven engineering templates for review |
 

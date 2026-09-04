@@ -50,7 +50,7 @@ referenced, so nothing ships dead.
 ## One persona, two layouts
 
 ```
-community/zi/                     canonical — Agent Plugins 1.0.0
+ops/zi/                     canonical — Agent Plugins 1.0.0
       │  scripts/export-legacy.mjs (byte-for-byte copy, no rewriting)
       ▼
 build/legacy/zi/                  for NanoClaw installs predating Agent Plugins

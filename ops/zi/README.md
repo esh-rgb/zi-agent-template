@@ -11,8 +11,8 @@ employee, nonprofit, alumni, relocation, interest groups.
 ## Install
 
 ```bash
-ncl groups create --template community/zi --name "Zi Operator"
-ncl groups create --template community/zi --name "Zi Member"
+ncl groups create --template ops/zi --name "Zi Operator"
+ncl groups create --template ops/zi --name "Zi Member"
 ```
 
 Then wire each to a channel (`/manage-channels` or `ncl wirings create`) and tell

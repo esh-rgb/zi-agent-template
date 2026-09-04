@@ -43,7 +43,7 @@ cd /path/to/nanoclaw
 grep -rq "plugin.json" src/templates/ && echo CANONICAL || echo LEGACY
 ```
 
-- `CANONICAL` — supports Agent Plugins. Use `community/zi`.
+- `CANONICAL` — supports Agent Plugins. Use `ops/zi`.
 - `LEGACY` — predates it. Use `build/legacy/zi`.
 
 Installs from mid-2026 and earlier are `LEGACY`. That is expected and fully
@@ -58,8 +58,8 @@ git clone https://github.com/esh-rgb/zi-agent-template /tmp/zi
 **Canonical:**
 
 ```bash
-mkdir -p /path/to/nanoclaw/templates/community
-cp -r /tmp/zi/community/zi /path/to/nanoclaw/templates/community/zi
+mkdir -p /path/to/nanoclaw/templates/ops
+cp -r /tmp/zi/ops/zi /path/to/nanoclaw/templates/ops/zi
 ```
 
 **Legacy** — point the template directory at the export rather than copying:
@@ -106,8 +106,8 @@ That creates exactly the `origin/channels` ref the skills read.
 
 ```bash
 # canonical
-ncl groups create --template community/zi --name "Zi Operator"
-ncl groups create --template community/zi --name "Zi Member"
+ncl groups create --template ops/zi --name "Zi Operator"
+ncl groups create --template ops/zi --name "Zi Member"
 
 # legacy
 ncl groups create --template zi --name "Zi Operator"

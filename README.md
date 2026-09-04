@@ -16,10 +16,10 @@ community or organization.
 
 ```bash
 git clone https://github.com/esh-rgb/zi-agent-template
-cp -r zi-agent-template/community/zi /path/to/nanoclaw/templates/community/zi
+cp -r zi-agent-template/ops/zi /path/to/nanoclaw/templates/ops/zi
 
-ncl groups create --template community/zi --name "Zi Operator"
-ncl groups create --template community/zi --name "Zi Member"
+ncl groups create --template ops/zi --name "Zi Operator"
+ncl groups create --template ops/zi --name "Zi Member"
 ```
 
 On a NanoClaw install predating Agent Plugins support, point at the generated legacy
@@ -115,7 +115,7 @@ npm run build   # regenerate build/legacy from the canonical source
 npm test        # 43 tests: structure, sync, secrets, defenses, policy invariants
 ```
 
-`community/zi/` is the source of truth. `build/` is generated — never edit it.
+`ops/zi/` is the source of truth. `build/` is generated — never edit it.
 
 ## Make it yours
 

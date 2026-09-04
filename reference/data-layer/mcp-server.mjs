@@ -20,6 +20,7 @@
  */
 import readline from 'node:readline';
 import { Store } from './store.mjs';
+import { personalFields } from './consent.mjs';
 
 const PROTOCOL_VERSION = '2025-06-18';
 
@@ -28,14 +29,30 @@ const HUMAN_ONLY_STATUS = new Set(['VERIFIED', 'APPROVED', 'PUBLISHED']);
 
 const store = new Store({
   dir: process.env.ZI_DATA_DIR || undefined,
+  writesDir: process.env.ZI_WRITES_DIR || undefined,
   auditLog: process.env.ZI_AUDIT_LOG || null,
 });
+
+/**
+ * community_get and community_query are plain reads, not community_disclose --
+ * they must never be the back door around the consent gate. Strip whatever
+ * consent.mjs classifies as personal before a record leaves this process, and
+ * name what was stripped so a caller knows community_disclose is the path to it.
+ */
+function redact(record) {
+  if (!record) return record;
+  const hidden = personalFields(record);
+  if (hidden.length === 0) return record;
+  const shown = { ...record };
+  for (const field of hidden) delete shown[field];
+  return { ...shown, _redacted: hidden };
+}
 
 const TOOLS = [
   {
     name: 'community_get',
     description:
-      'Fetch one record by its own id. Fetch by reference: pass the id you were given, not a description.',
+      'Fetch one record by its own id. Fetch by reference: pass the id you were given, not a description. Personal fields are stripped -- use community_disclose for those, with a stated purpose.',
     inputSchema: {
       type: 'object',
       required: ['entity', 'id'],
@@ -44,7 +61,7 @@ const TOOLS = [
         id: { type: 'string' },
       },
     },
-    handler: ({ entity, id }) => store.get(entity, id),
+    handler: ({ entity, id }) => redact(store.get(entity, id)),
   },
   {
     name: 'community_query',
@@ -58,7 +75,7 @@ const TOOLS = [
         where: { type: 'object', description: 'field -> value, all must match' },
       },
     },
-    handler: ({ entity, where }) => store.query(entity, where ?? {}),
+    handler: ({ entity, where }) => store.query(entity, where ?? {}).map(redact),
   },
   {
     name: 'community_entities',
@@ -87,7 +104,7 @@ const TOOLS = [
   {
     name: 'community_record',
     description:
-      'Write a record this store alone can see. Refuses a record with no provenance, and refuses to assign VERIFIED, APPROVED or PUBLISHED -- only a named human verifier moves an item there.',
+      'Write a record this store alone can see, and persist it to disk. Refuses a record with no provenance, and refuses to assign VERIFIED, APPROVED or PUBLISHED -- only a named human verifier moves an item there.',
     inputSchema: {
       type: 'object',
       required: ['entity', 'record'],
@@ -102,7 +119,10 @@ const TOOLS = [
           `status "${record.status}" is reachable only by a named human verifier, not by this tool`,
         );
       }
-      return store.put(entity, record);
+      const stored = store.put(entity, record);
+      // put() only mutates memory; without this the write is lost on restart.
+      const file = store.save();
+      return { ...stored, _persisted_to: file };
     },
   },
 ];

@@ -126,7 +126,7 @@ Read this before relying on it.
 ```bash
 npm run check              # structural validation against both layouts
 npm run build              # regenerate build/legacy from the canonical source
-npm test                   # 89 tests: structure, sync, secrets, defenses, policy, references, docs
+npm test                   # 94 tests: structure, sync, secrets, defenses, policy, references, docs
 npm run validate:reference # the reference data layer's seed against its schemas
 ```
 

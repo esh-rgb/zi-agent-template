@@ -26,6 +26,22 @@ export const PURPOSES = [
 ];
 
 /**
+ * Purposes that name a specific recipient. A consent record for one of these
+ * with no `recipient_ref` at all is not a wildcard covering anyone who asks --
+ * it is an incomplete record, and is refused rather than silently passed.
+ */
+const RECIPIENT_SCOPED = new Set([
+  'introduction',
+  'data_transfer_to_organization',
+  'data_transfer_to_person',
+]);
+
+/** Parse an RFC 3339 timestamp to milliseconds. String comparison is wrong
+ * across differing UTC offsets -- a later instant can sort as an earlier
+ * string -- so every comparison below goes through this first. */
+const at = (iso) => Date.parse(iso);
+
+/**
  * Decide whether `fields` about `user_id` may cross for `purpose`.
  *
  * Returns `{ allowed, reason, consent_id }`. `allowed: false` is the default for
@@ -50,14 +66,21 @@ export function checkConsent(consents, request) {
     return deny(`no Consent record for ${user_id} covering "${purpose}" -- ask the person`);
   }
 
+  const nowMs = at(now);
   const reasons = [];
   for (const consent of candidates) {
-    if (consent.withdrawn_at && consent.withdrawn_at <= now) {
+    if (consent.withdrawn_at && at(consent.withdrawn_at) <= nowMs) {
       reasons.push(`${consent.consent_id} was withdrawn on ${consent.withdrawn_at}`);
       continue;
     }
-    if (consent.expires_at && consent.expires_at <= now) {
+    if (consent.expires_at && at(consent.expires_at) <= nowMs) {
       reasons.push(`${consent.consent_id} expired on ${consent.expires_at}`);
+      continue;
+    }
+    // A recipient-scoped purpose with no recorded recipient is an incomplete
+    // record, not a blanket grant -- it never matches, whoever asks.
+    if (RECIPIENT_SCOPED.has(purpose) && !consent.recipient_ref) {
+      reasons.push(`${consent.consent_id} names no recipient, and "${purpose}" requires one`);
       continue;
     }
     // A consent naming a recipient covers that recipient and no other.

@@ -115,7 +115,7 @@ that runs.
 - Eleven legal engineering templates, each labeled non-certifying.
 - Dual layout: canonical Agent Plugins 1.0.0 under `ops/zi`, generated legacy
   export under `build/legacy`, with a byte-identical sync test.
-- 89 tests: structure, layout sync, repository-wide secret scan, defense coverage,
+- 94 tests: structure, layout sync, repository-wide secret scan, defense coverage,
   policy invariants, the reference implementations, and documentation consistency.
 
 ### Known limits

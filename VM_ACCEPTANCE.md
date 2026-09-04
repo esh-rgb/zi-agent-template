@@ -27,7 +27,7 @@ Environment used for the verified rows: Node v22.22.2; NanoClaw checkout at
 | Licensing reviewed | `PASS` | No third-party code; `LICENSE_AUDIT.md`, manifest records zero components |
 | Injection-defense clauses present | `PARTIAL` | Coverage only — asserts a clause exists for each of 13 attacks. **Not evidence the model resists them** |
 | Approval/verification/privacy invariants present | `PARTIAL` | 29 policy assertions on template text. Text, not behavior |
-| Test suite stable | `PASS` | 89 tests, 5 consecutive clean runs |
+| Test suite stable | `PASS` | 94 tests, 5 consecutive clean runs |
 | Reference implementations valid | `PASS` | `npm run validate:reference`: 13 entity schemas, seed valid. 22 assertions on the consent gate, the token rules and the reference MCP server's tool surface |
 | Documented counts match the repository | `PASS` | `tests/docs.test.mjs` derives skill, task, context and test counts from the filesystem and fails CI on drift |
 

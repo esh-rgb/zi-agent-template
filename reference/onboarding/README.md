@@ -39,11 +39,14 @@ const { token, record } = issueToken(user_id);   // store `record`, not `token`
 const url = deepLink({ base: process.env.CHANNEL_LINK, token });
 ```
 
-On arrival, redeem once:
+On arrival, redeem once, and store the consumed record immediately:
 
 ```js
 const result = redeemToken(record, presented, { source: 'link' });
-if (!result.ok) startIdentificationOver(result.reason);
+if (!result.ok) return startIdentificationOver(result.reason);
+await tokenStore.save(result.consumed);   // required -- redeemToken() only computes
+                                           // used_at, it does not persist anything.
+                                           // Skip this and the token stays replayable.
 ```
 
 ## The token rules, and why they are in code

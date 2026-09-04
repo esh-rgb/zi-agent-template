@@ -47,26 +47,47 @@ const KEY = {
 export class Store {
   /**
    * @param {object} options
-   * @param {string} [options.dir]     Directory of `*.json` collection files.
-   * @param {string} [options.auditLog] Append-only JSONL path; null disables it.
+   * @param {string} [options.dir]       Directory of `*.json` collection files.
+   * @param {string} [options.writesDir] Where `save()` writes by default. Kept
+   *   out of `dir` on purpose: `dir` is also what `load()` re-reads on the next
+   *   `new Store()`, and a save target inside the load path would have the next
+   *   load read both the seed and the save, concatenating the same records.
+   *   Defaults to a `writes/` sibling of `dir` so a fresh install needs no config.
+   * @param {string} [options.auditLog]  Append-only JSONL path; null disables it.
    */
-  constructor({ dir = path.join(here, 'seed'), auditLog = null } = {}) {
+  constructor({ dir = path.join(here, 'seed'), writesDir, auditLog = null } = {}) {
     this.dir = dir;
+    this.writesDir = writesDir ?? path.join(path.dirname(dir), 'writes');
     this.auditLog = auditLog;
     this.schemas = loadSchemas();
     this.collections = new Map();
     this.load();
   }
 
-  /** Read every collection file in `dir` into memory. */
+  /**
+   * Read every collection file in `dir` into memory, then in `writesDir` if it
+   * differs and exists. A record present in both is kept once, by id, with the
+   * later file's version winning -- so a write survives a reload instead of
+   * appearing twice or being shadowed by the seed. "Later" means later in
+   * directory-read order, which `readdirSync` does not guarantee is stable
+   * across filesystems; `writesDir` is read after `dir` specifically so a saved
+   * write always wins the tie against the seed it started from.
+   */
   load() {
     this.collections.clear();
-    if (!fs.existsSync(this.dir)) return;
-    for (const file of fs.readdirSync(this.dir).filter((f) => f.endsWith('.json'))) {
-      const data = JSON.parse(fs.readFileSync(path.join(this.dir, file), 'utf-8'));
-      for (const [entity, records] of Object.entries(data)) {
-        const existing = this.collections.get(entity) ?? [];
-        this.collections.set(entity, existing.concat(records));
+    const dirs = this.writesDir === this.dir ? [this.dir] : [this.dir, this.writesDir];
+    for (const dir of dirs) {
+      if (!fs.existsSync(dir)) continue;
+      for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
+        const data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf-8'));
+        for (const [entity, records] of Object.entries(data)) {
+          const key = KEY[entity];
+          if (!key) throw new Error(`${file}: unknown entity "${entity}"`);
+          const existing = this.collections.get(entity) ?? [];
+          const merged = new Map(existing.map((r) => [r[key], r]));
+          for (const record of records) merged.set(record[key], record);
+          this.collections.set(entity, [...merged.values()]);
+        }
       }
     }
   }
@@ -171,8 +192,12 @@ export class Store {
     return removed;
   }
 
-  /** Persist the in-memory collections back to a single file. */
-  save(file = path.join(this.dir, 'store.json')) {
+  /**
+   * Persist the in-memory collections back to a single file, in `writesDir` by
+   * default -- never `dir`, so the next `load()` does not read this file as a
+   * second copy of the seed it came from.
+   */
+  save(file = path.join(this.writesDir, 'store.json')) {
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, `${JSON.stringify(Object.fromEntries(this.collections), null, 2)}\n`);
     return file;

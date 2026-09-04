@@ -51,7 +51,8 @@ servers and needs no keys. On **your** install, after stamping, add:
       "args": ["/abs/path/to/reference/data-layer/mcp-server.mjs"],
       "env": {
         "ZI_DATA_DIR": "/abs/path/to/your/community-data",
-        "ZI_AUDIT_LOG": "/abs/path/to/your/community-data/audit.jsonl"
+        "ZI_WRITES_DIR": "/abs/path/to/your/community-data-writes",
+        "ZI_AUDIT_LOG": "/abs/path/to/your/community-data-writes/audit.jsonl"
       }
     }
   }
@@ -60,6 +61,13 @@ servers and needs no keys. On **your** install, after stamping, add:
 
 Point `ZI_DATA_DIR` at your own directory of `*.json` collection files. Do not edit
 the seed and call it your community.
+
+`ZI_WRITES_DIR` is where `community_record` persists — **keep it separate from
+`ZI_DATA_DIR`.** `load()` reads both directories on every restart and merges by
+id, later-read wins; if a write landed inside `ZI_DATA_DIR` itself, the next
+restart would read the seed and the write as if they were two files describing
+the same community. Omit it and the server defaults to a `writes/` directory next
+to `ZI_DATA_DIR`, which is safe but worth pointing somewhere you control.
 
 Scope one store per community, and give the operator group and the member group
 data scoped to what each is entitled to see. Two agent groups reading one

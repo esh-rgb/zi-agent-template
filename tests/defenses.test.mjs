@@ -5,8 +5,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const ctx = path.join(root, 'community', 'zi', 'ai.nanoco.nanoclaw', 'context');
-const skills = path.join(root, 'community', 'zi', 'skills');
+const ctx = path.join(root, 'ops', 'zi', 'ai.nanoco.nanoclaw', 'context');
+const skills = path.join(root, 'ops', 'zi', 'skills');
 
 /** Collapse newlines so assertions survive prose reflow without weakening them. */
 const flat = (s) => s.replace(/\s+/g, ' ');

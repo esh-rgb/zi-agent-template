@@ -7,7 +7,8 @@
 
 **Level A — autonomous, low risk.** No approval needed. Classify content; summarize
 approved knowledge; draft copy; *suggest* an action; log a gap; estimate usage;
-prepare a verification request; answer from approved knowledge.
+prepare a verification request; answer from approved knowledge; add a lightweight
+acknowledgment reaction to a message.
 
 **Level B — the affected person confirms, in the conversation, before you act.**
 Writing to that person's calendar; storing a new personal preference; starting a

@@ -68,7 +68,7 @@ test('no internal organizational identifiers in the public template', () => {
 
 test('the template declares no credentials of its own', () => {
   const mcp = JSON.parse(
-    fs.readFileSync(path.join(root, 'community', 'zi', 'mcp.json'), 'utf-8'),
+    fs.readFileSync(path.join(root, 'ops', 'zi', 'mcp.json'), 'utf-8'),
   );
   const serialized = JSON.stringify(mcp);
   for (const key of ['TOKEN', 'SECRET', 'PASSWORD', 'API_KEY', 'CREDENTIAL', 'PRIVATE_KEY']) {

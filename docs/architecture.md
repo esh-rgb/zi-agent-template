@@ -163,6 +163,12 @@ and connection. A NanoClaw template ships instructions, skills, MCP declarations
 and scheduled tasks — it ships no application code. That line decides which of
 the following is real today and which is a contract waiting for an implementation.
 
+Three states, not two. Some contracts now have a worked reference implementation
+in this repository, **outside** the template, under `reference/`. A reference is
+not a shipped feature: it is optional, unsupported, wired by the operator or not
+at all, and on no acceptance row. It closes the gap between "specified" and
+"someone has to invent this from a paragraph" — nothing more.
+
 ### Locked — shipped and verified in this repo
 
 - One Zi identity; operator and member as separate NanoClaw agent groups.
@@ -177,27 +183,50 @@ the following is real today and which is a contract waiting for an implementatio
 - Memory classes: user, conversation, operational state, community knowledge.
 - Eleven skills, four paused scheduled tasks, both template layouts in sync.
 
-### Open — contract defined, implementation not shipped
+### Referenced — contract defined, a worked reference in `reference/`
+
+The operator still wires it. Nothing below is loaded, required, or supported by
+the template, and the template's own text still describes each as a contract,
+because that is what it is.
 
 - **The community data layer.** Schema and rules are specified; the store is not.
-  An operator wires one (MCP server, API, or a maintained file at small scale).
-  Until then Zi works from conversation and memory, and says so.
+  `reference/data-layer/` is one store that satisfies them: a JSON Schema per
+  entity, a file-backed implementation of fetch-by-reference, consent-gated
+  disclosure, provenance stamping and an append-only audit log, plus an MCP
+  server over it that needs no credentials and exposes no externally-visible
+  write. Wire it, wire your own, or wire nothing — until something is wired Zi
+  works from conversation and memory, and says so.
 - **Specialist agents as separate runtimes.** The routing model and the closed
-  list are defined. Whether each specialist is a distinct NanoClaw agent group or
-  a skill Zi runs itself is an operator's deployment choice. Nothing in the
-  template forces either.
+  list are defined. `reference/specialists/` now defines each of the nine — job,
+  references received, tools, inherited approval levels, refusals — and
+  `docs/specialists.md` says when one earns a separate NanoClaw agent group
+  versus staying a skill Zi runs itself. Only `publishing`, and `events` at
+  volume, have an argument beyond tidiness. Nothing in the template forces
+  either.
+- **The activation surface.** The short onboarding flow and the deep link into a
+  chat channel are specified in `onboarding.md` as a contract. They are a web app
+  and cannot ship inside a template. `reference/onboarding/` is their shape: the
+  four screens as one self-contained page that makes no network request, and the
+  linking-token rules as code — short-lived, single-use, hashed at rest, never
+  logged, never accepted from message content. Zi's side — arriving in context
+  and never re-asking — is implemented in the template itself.
+
+### Open — contract defined, implementation not shipped
+
 - **Shared state across specialists.** NanoClaw isolates agent groups by design;
   it provides no shared store between them. Cross-specialist state therefore
   depends entirely on the data layer above — which is also why that layer is the
-  one deliberate crossing of the isolation boundary. See `trust-model.md`.
-- **The activation surface.** The short onboarding flow and the deep link into a
-  chat channel are specified in `onboarding.md` as a contract. They are a web app
-  and cannot ship inside a template. Zi's side — arriving in context and never
-  re-asking — is implemented.
+  one deliberate crossing of the isolation boundary. A reference store does not
+  change this: two agent groups reading one unscoped store is one trust boundary
+  wearing two names. See `trust-model.md`.
 - **Tool discovery as a mechanism.** Today it is a discipline Zi follows, not a
-  runtime that filters a registry before the model sees it.
-- **Cross-channel identity.** One `user_id` across channels is specified. The
-  linking service that guarantees it is not part of the template.
+  runtime that filters a registry before the model sees it. Nothing in this
+  repository changes that, and nothing can: it needs a host that filters the
+  registry before the model sees it.
+- **Cross-channel identity.** One `user_id` across channels is specified, and the
+  reference data layer stores the channel identities against it. The linking
+  *service* that guarantees the same person resolves to the same `user_id` across
+  channels is not part of the template and is not referenced either.
 
 ### Success measure
 

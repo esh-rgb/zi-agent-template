@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common",
+  "title": "Shared definitions",
+  "description": "Fragments reused by every entity schema. Not an entity itself.",
+  "$defs": {
+    "provenance": {
+      "type": "object",
+      "description": "Where a fact came from, who verified it, when. A record with no traceable origin is a rumor with a schema.",
+      "required": ["source", "recorded_at"],
+      "properties": {
+        "source": { "type": "string", "minLength": 1 },
+        "source_kind": {
+          "type": "string",
+          "enum": ["operator", "member", "trusted_source", "connector", "import", "inference"]
+        },
+        "recorded_at": { "type": "string", "format": "date-time" },
+        "verified_by": { "type": "string" },
+        "verified_at": { "type": "string", "format": "date-time" },
+        "last_changed_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "DISCOVERED", "NEEDS_INFO", "PENDING_VERIFICATION", "VERIFIED",
+        "READY_FOR_REVIEW", "APPROVED", "PUBLISHED", "UPDATED", "CANCELLED"
+      ]
+    },
+    "id": { "type": "string", "pattern": "^[a-z]{3,4}_[A-Za-z0-9_-]{3,64}$" },
+    "topics": { "type": "array", "items": { "type": "string" } },
+    "languages": { "type": "array", "items": { "type": "string" } }
+  }
+}

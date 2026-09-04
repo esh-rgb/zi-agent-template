@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "relationship",
+  "title": "Relationship",
+  "description": "A connection between two entities, and how it was established. An inferred relationship is not an established one.",
+  "type": "object",
+  "required": ["relationship_id", "type", "from_id", "to_id", "established_by", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "relationship_id": { "$ref": "common#/$defs/id" },
+    "type": {
+      "type": "string",
+      "enum": ["member_of", "organizes", "partner_of", "verified_by", "introduced_to", "works_at", "attends"]
+    },
+    "from_id": { "$ref": "common#/$defs/id" },
+    "to_id": { "$ref": "common#/$defs/id" },
+    "established_by": {
+      "type": "string",
+      "enum": ["operator", "self_declared", "verified", "connector"],
+      "description": "Never \"inferred\": a guess is not a relationship."
+    },
+    "provenance": { "$ref": "common#/$defs/provenance" }
+  }
+}

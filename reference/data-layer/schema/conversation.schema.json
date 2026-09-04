@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "conversation",
+  "title": "Conversation",
+  "description": "A thread, for reference only. Deliberately holds no transcript: specialists share state, not conversations.",
+  "type": "object",
+  "required": ["conversation_id", "channel", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "conversation_id": { "$ref": "common#/$defs/id" },
+    "channel": { "type": "string", "minLength": 1 },
+    "community_id": { "$ref": "common#/$defs/id" },
+    "participant_ids": { "type": "array", "items": { "$ref": "common#/$defs/id" } },
+    "opened_at": { "type": "string", "format": "date-time" },
+    "last_activity_at": { "type": "string", "format": "date-time" },
+    "provenance": { "$ref": "common#/$defs/provenance" }
+  }
+}

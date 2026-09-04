@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "event",
+  "title": "Event",
+  "description": "Something happening at a time and place. Required fields come from verification.md: what, exact date, start time, location or link, audience, organizer, and how to attend. Anything missing means NEEDS_INFO -- do not fill a gap by inference.",
+  "type": "object",
+  "required": ["event_id", "title", "date", "start_time", "audience", "organizer", "how_to_attend", "status", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "event_id": { "$ref": "common#/$defs/id" },
+    "community_id": { "$ref": "common#/$defs/id" },
+    "title": { "type": "string", "minLength": 1 },
+    "date": { "type": "string", "format": "date" },
+    "start_time": { "type": "string", "pattern": "^[0-2][0-9]:[0-5][0-9]$" },
+    "end_time": { "type": "string", "pattern": "^[0-2][0-9]:[0-5][0-9]$" },
+    "timezone": { "type": "string" },
+    "location_id": { "$ref": "common#/$defs/id" },
+    "link": { "type": "string" },
+    "audience": { "type": "string", "minLength": 1 },
+    "organizer": { "type": "string", "minLength": 1 },
+    "how_to_attend": { "type": "string", "minLength": 1 },
+    "languages": { "$ref": "common#/$defs/languages" },
+    "topics": { "$ref": "common#/$defs/topics" },
+    "status": { "$ref": "common#/$defs/status" },
+    "missing_fields": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Named explicitly rather than inferred, so NEEDS_INFO says what it needs."
+    },
+    "provenance": { "$ref": "common#/$defs/provenance" }
+  }
+}

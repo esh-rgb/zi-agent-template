@@ -17,7 +17,7 @@ Environment used for the verified rows: Node v22.22.2; NanoClaw checkout at
 
 | Check | Status | Evidence |
 |---|---|---|
-| Template parses with NanoClaw's own parser | `PASS` | `parseTemplate(build/legacy/zi)` returned 125-line instructions, 9 context extras, 9 skills, 4 tasks |
+| Template parses with NanoClaw's own parser | `PASS`, **stale** | `parseTemplate(build/legacy/zi)` returned 125-line instructions, 9 context extras, 9 skills, 4 tasks — observed at the Round 5 template, against a NanoClaw checkout not available since. **RE-RUN REQUIRED**: the template is now 142-line instructions, 12 context extras, 11 skills, 4 tasks, and no parser run has covered that shape |
 | Task schedules valid, incl. frequency limit | `PASS` | All 4 accepted by NanoClaw's own `prepareScheduledTask` |
 | Both layouts structurally valid | `PASS` | `npm run check` |
 | Canonical ↔ legacy stay in sync | `PASS` | Byte-identical instructions asserted; stale export fails CI |
@@ -26,8 +26,14 @@ Environment used for the verified rows: Node v22.22.2; NanoClaw checkout at
 | Template declares no credentials | `PASS` | `mcp.json` is `{"mcpServers":{}}` |
 | Licensing reviewed | `PASS` | No third-party code; `LICENSE_AUDIT.md`, manifest records zero components |
 | Injection-defense clauses present | `PARTIAL` | Coverage only — asserts a clause exists for each of 13 attacks. **Not evidence the model resists them** |
-| Approval/verification/privacy invariants present | `PARTIAL` | 20 policy assertions on template text. Text, not behavior |
-| Test suite stable | `PASS` | 44 tests, 5 consecutive clean runs |
+| Approval/verification/privacy invariants present | `PARTIAL` | 29 policy assertions on template text. Text, not behavior |
+| Test suite stable | `PASS` | 89 tests, 5 consecutive clean runs |
+| Reference implementations valid | `PASS` | `npm run validate:reference`: 13 entity schemas, seed valid. 22 assertions on the consent gate, the token rules and the reference MCP server's tool surface |
+| Documented counts match the repository | `PASS` | `tests/docs.test.mjs` derives skill, task, context and test counts from the filesystem and fails CI on drift |
+
+The `reference/` implementations are **not** on this gate. They are optional and
+unsupported, an operator wires them or does not, and nothing in the acceptance
+below depends on one existing.
 
 ## Requires a live install — fill in as you go
 

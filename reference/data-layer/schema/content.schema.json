@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "content",
+  "title": "Content",
+  "description": "A draft, a post, a guide. One factual core, per-channel renderings -- the medium changes the format, never the facts.",
+  "type": "object",
+  "required": ["content_id", "title", "core", "status", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "content_id": { "$ref": "common#/$defs/id" },
+    "community_id": { "$ref": "common#/$defs/id" },
+    "title": { "type": "string", "minLength": 1 },
+    "core": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The verified factual core every rendering must preserve."
+    },
+    "about": {
+      "type": "array",
+      "items": { "$ref": "common#/$defs/id" },
+      "description": "References to the events, opportunities or organizations this content is about."
+    },
+    "renderings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["channel", "body"],
+        "additionalProperties": false,
+        "properties": {
+          "channel": { "type": "string" },
+          "body": { "type": "string" },
+          "approved_by": { "type": "string" },
+          "approved_at": { "type": "string", "format": "date-time" },
+          "published_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "status": { "$ref": "common#/$defs/status" },
+    "provenance": { "$ref": "common#/$defs/provenance" }
+  }
+}

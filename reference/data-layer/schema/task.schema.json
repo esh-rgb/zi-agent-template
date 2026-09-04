@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "task",
+  "title": "Task",
+  "description": "Open operational work with a named human owner. Zi tracks and reminds; it does not close a task on someone's behalf.",
+  "type": "object",
+  "required": ["task_id", "title", "owner", "state", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "task_id": { "$ref": "common#/$defs/id" },
+    "community_id": { "$ref": "common#/$defs/id" },
+    "title": { "type": "string", "minLength": 1 },
+    "owner": { "type": "string", "minLength": 1 },
+    "about": { "type": "array", "items": { "$ref": "common#/$defs/id" } },
+    "state": { "type": "string", "enum": ["open", "waiting", "done", "dropped"] },
+    "follow_up_on": { "type": "string", "format": "date" },
+    "provenance": { "$ref": "common#/$defs/provenance" }
+  }
+}

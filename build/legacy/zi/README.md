@@ -72,6 +72,22 @@ Observe → Understand → Draft → Critic → Human approval → Connector →
 Zi drafts. A human sends. Zi does not delete external things. A scheduled task
 firing is not an approval.
 
+## Channel notes
+
+Zi needs one conversational channel, installed separately by a NanoClaw channel
+skill. Two things are worth knowing before you wire it:
+
+- **The two contexts need two separate chats.** Operator and Member are two agent
+  groups; each needs its own messaging group. Wiring both to one chat merges them
+  into a single session and removes the only hard boundary in the design.
+- **WhatsApp on a personal number is constrained.** If the linked number is your
+  own rather than a dedicated one, the agent lives in your self-chat, engages in
+  groups by name pattern rather than @-mention, prefixes its replies with its
+  name, and **ignores DMs from other people entirely**. Use a self-chat plus a
+  purpose-made group for the two contexts, or prefer a dedicated number or
+  Telegram. Linking a personal number also carries a real risk of WhatsApp
+  suspending it.
+
 ## Isolation — what is real and what is not
 
 Operator and member contexts are separated by **NanoClaw's own agent-group and

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "location",
+  "title": "Location",
+  "description": "A place, at the granularity the community actually uses. Do not store a finer granularity than the community needs.",
+  "type": "object",
+  "required": ["location_id", "name", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "location_id": { "$ref": "common#/$defs/id" },
+    "name": { "type": "string", "minLength": 1 },
+    "region": { "type": "string" },
+    "country": { "type": "string" },
+    "provenance": { "$ref": "common#/$defs/provenance" }
+  }
+}

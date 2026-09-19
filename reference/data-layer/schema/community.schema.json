@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "community",
+  "title": "Community",
+  "description": "A community or sub-community. Scoping the store by community_id is how two agent groups keep two trust boundaries.",
+  "type": "object",
+  "required": ["community_id", "name", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "community_id": { "$ref": "common#/$defs/id" },
+    "name": { "type": "string", "minLength": 1 },
+    "one_line": { "type": "string" },
+    "topics": { "$ref": "common#/$defs/topics" },
+    "languages": { "$ref": "common#/$defs/languages" },
+    "timezone": { "type": "string" },
+    "location_id": { "$ref": "common#/$defs/id" },
+    "journey_stages": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "The stages this community actually uses."
+    },
+    "provenance": { "$ref": "common#/$defs/provenance" }
+  }
+}

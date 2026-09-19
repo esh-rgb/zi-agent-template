@@ -7,7 +7,8 @@ relying on Zi for anything consequential.
 
 - **Context isolation.** Two agent groups have separate workspaces, memory and
   sessions. A member group cannot read the operator group's files. This is NanoClaw,
-  and it holds regardless of what the model decides.
+  and it holds regardless of what the model decides. **One deliberate exception:**
+  a community data layer, once wired, is shared by design — see below.
 - **Credential secrecy.** The agent never receives raw credentials. The credential
   proxy injects them at the outbound HTTPS boundary, matched by API host. A prompt
   that extracts "the API key" gets nothing, because there is nothing in the container
@@ -38,6 +39,34 @@ documents forbid.
   Check the audit trail.
 - Do not rely on budget guidance as a spending cap. NanoClaw provides no token or
   cost enforcement, so nothing here can hard-stop a request.
+
+## The data layer is a deliberate hole in the isolation
+
+Zi is specified as an orchestration layer over a shared community data layer.
+Shared is the point: a specialist fetches a record rather than being handed a
+transcript. But it means the strongest guarantee in this design — that two agent
+groups cannot see each other's data — stops being absolute the moment such a
+store is wired.
+
+Stated precisely:
+
+- **Filesystem, memory and session isolation still hold.** NanoClaw enforces them
+  and the data layer does not change that.
+- **Records in the shared store are reachable from any context configured to read
+  it.** That is a configuration decision the operator makes, not something the
+  template can enforce.
+- **Consent and purpose limitation move to the record level.** With a shared
+  store, "this context cannot see it" is no longer the protection. The protection
+  is that personal fields require a `Consent` record for that specific purpose
+  before they cross to a person, an organization or a channel. That is a
+  behavioral control, not a runtime one.
+- **Therefore: scope what each context may read.** Give the member context read
+  access to community records, not to other members' personal records. Do not
+  wire one all-powerful connection and rely on instructions to hold the line.
+
+If you wire a data layer and grant every context full access to it, you have
+chosen a system with one trust boundary, not two. That can be a legitimate
+choice. It should be a knowing one.
 
 ## Threats this addresses
 

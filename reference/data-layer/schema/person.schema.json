@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "person",
+  "title": "Person",
+  "description": "An individual in the community. Personal fields never cross to anyone without a matching Consent record.",
+  "type": "object",
+  "required": ["user_id", "display_name", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "user_id": { "$ref": "common#/$defs/id" },
+    "display_name": { "type": "string", "minLength": 1 },
+    "preferred_language": { "type": "string" },
+    "languages": { "$ref": "common#/$defs/languages" },
+    "location_id": { "$ref": "common#/$defs/id" },
+    "journey_stage": {
+      "type": "string",
+      "description": "Deliberately free text: every community defines its own stages. Configure them; do not assume them."
+    },
+    "interests": { "$ref": "common#/$defs/topics" },
+    "community_ids": { "type": "array", "items": { "$ref": "common#/$defs/id" } },
+    "channel_identities": {
+      "type": "array",
+      "description": "One user_id, many channels. The profile is not owned by whichever channel was used first.",
+      "items": {
+        "type": "object",
+        "required": ["channel", "handle_ref"],
+        "additionalProperties": false,
+        "properties": {
+          "channel": { "type": "string" },
+          "handle_ref": {
+            "type": "string",
+            "description": "An opaque reference to the channel identity, not the raw phone number or address."
+          },
+          "linked_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "consent_ids": { "type": "array", "items": { "$ref": "common#/$defs/id" } },
+    "personalization": {
+      "type": "string",
+      "enum": ["opt_in", "opt_out"],
+      "description": "opt_out is honored without argument -- see the privacy-controls skill."
+    },
+    "provenance": { "$ref": "common#/$defs/provenance" }
+  }
+}

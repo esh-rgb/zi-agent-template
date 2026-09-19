@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "opportunity",
+  "title": "Opportunity",
+  "description": "Something a person could take up -- a role, a program, a place. Subject to the same verification status model as an event.",
+  "type": "object",
+  "required": ["opportunity_id", "title", "topic", "audience", "status", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "opportunity_id": { "$ref": "common#/$defs/id" },
+    "community_id": { "$ref": "common#/$defs/id" },
+    "organization_id": { "$ref": "common#/$defs/id" },
+    "title": { "type": "string", "minLength": 1 },
+    "topic": { "type": "string", "minLength": 1 },
+    "audience": { "type": "string", "minLength": 1 },
+    "location_id": { "$ref": "common#/$defs/id" },
+    "languages": { "$ref": "common#/$defs/languages" },
+    "valid_until": { "type": "string", "format": "date" },
+    "how_to_apply": { "type": "string" },
+    "status": { "$ref": "common#/$defs/status" },
+    "provenance": { "$ref": "common#/$defs/provenance" }
+  }
+}

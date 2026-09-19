@@ -50,7 +50,7 @@ referenced, so nothing ships dead.
 ## One persona, two layouts
 
 ```
-community/zi/                     canonical — Agent Plugins 1.0.0
+ops/zi/                     canonical — Agent Plugins 1.0.0
       │  scripts/export-legacy.mjs (byte-for-byte copy, no rewriting)
       ▼
 build/legacy/zi/                  for NanoClaw installs predating Agent Plugins
@@ -89,12 +89,58 @@ The **Critic is deliberately not a skill.** A skill only runs when it triggers; 
 Critic must run on every external action, so it lives in the always-loaded
 instructions and in `approval-policy.md`.
 
-## Specialists
+## Orchestration
 
-There are none, and that is a decision. A separate agent earns its existence only
-with a distinct trust boundary, tool set, or responsibility. Splitting Zi into a
-roster of named personas would add orchestration surface and a second identity for
-the user to track without adding a single boundary. One Zi with skills.
+Zi is the main assistant and orchestrator. It resolves intent, loads only what
+that intent needs, delegates to a specialist where one is configured, and returns
+one answer in one voice.
+
+```
+intent
+ → skill + specialist + tools + context selected for THIS task
+ → specialist executes with references, not transcripts
+ → results composed back into a single Zi reply
+```
+
+Four things stay separate and are never collapsed into each other:
+
+| Layer | Is | Is not |
+|---|---|---|
+| Skills | knowledge and procedure | an agent |
+| Specialists | deciders and executors | a rule |
+| Tools | external actions | a fact |
+| Data | the shared source of truth | a conversation |
+
+**Specialists Zi may route to:** `community`, `events`, `content`, `partner`,
+`matching`, `publishing`, `moderation`, `crm`, `analytics`. Deliberately a short,
+closed list — a new job title is a reason for a skill, not a new agent. Where a
+specialist is not configured, Zi does the work itself with the relevant skill.
+
+**This reverses an earlier decision.** Through Round 4 this template shipped no
+specialists at all, on the reasoning that a second agent earns its existence only
+with a distinct trust boundary, tool set or responsibility. That reasoning still
+holds and is exactly why the list is closed and short. What changed is the
+product target: Zi is now specified as an orchestration layer, so routing is part
+of the design rather than avoidable complexity.
+
+## Just-in-time context
+
+Context is fetched, not carried. Skills load when a task needs them. Tools are
+discovered per task rather than exposed globally. Specialists receive `user_id`,
+`event_id`, `community_id` and the like — never the chat history, never another
+community's data.
+
+The practical payoff is the same as the trust payoff: a specialist that never
+received the transcript cannot leak it.
+
+## Community data layer
+
+Structured records are the source of truth — `Person`, `Organization`,
+`Community`, `Event`, `Opportunity`, `Need`, `Offer`, `Content`, `Conversation`,
+`Location`, `Relationship`, `Permission`/`Consent`, `Task`. Full schema:
+`ops/zi/ai.nanoco.nanoclaw/context/additional_context/data-layer.md`.
+
+The template ships the **contract**, not the store. See "Locked and open" below.
 
 ## Where enforcement actually lives
 
@@ -109,3 +155,81 @@ the user to track without adding a single boundary. One Zi with skills.
 
 Behavioral controls are real and they are the majority of this template. They are
 not access control. `docs/trust-model.md` states the consequences plainly.
+
+## Locked and open
+
+The product target is an orchestration layer for community intelligence, action
+and connection. A NanoClaw template ships instructions, skills, MCP declarations
+and scheduled tasks — it ships no application code. That line decides which of
+the following is real today and which is a contract waiting for an implementation.
+
+Three states, not two. Some contracts now have a worked reference implementation
+in this repository, **outside** the template, under `reference/`. A reference is
+not a shipped feature: it is optional, unsupported, wired by the operator or not
+at all, and on no acceptance row. It closes the gap between "specified" and
+"someone has to invent this from a paragraph" — nothing more.
+
+### Locked — shipped and verified in this repo
+
+- One Zi identity; operator and member as separate NanoClaw agent groups.
+- Orchestrator model: intent → skill/specialist/tools/context → one composed answer.
+- Just-in-time context; references passed to specialists, never transcripts.
+- Tool discovery as a discipline: narrow to the task before acting.
+- The four-layer separation of skills, specialists, tools and data.
+- Approval levels A–D, `No approval = no action`, non-overridable Critic `BLOCK`.
+- Verification status model; only a named human reaches `VERIFIED`.
+- Untrusted-content contract and its named defenses.
+- Consent required before personal data crosses to anyone.
+- Memory classes: user, conversation, operational state, community knowledge.
+- Eleven skills, four paused scheduled tasks, both template layouts in sync.
+
+### Referenced — contract defined, a worked reference in `reference/`
+
+The operator still wires it. Nothing below is loaded, required, or supported by
+the template, and the template's own text still describes each as a contract,
+because that is what it is.
+
+- **The community data layer.** Schema and rules are specified; the store is not.
+  `reference/data-layer/` is one store that satisfies them: a JSON Schema per
+  entity, a file-backed implementation of fetch-by-reference, consent-gated
+  disclosure, provenance stamping and an append-only audit log, plus an MCP
+  server over it that needs no credentials and exposes no externally-visible
+  write. Wire it, wire your own, or wire nothing — until something is wired Zi
+  works from conversation and memory, and says so.
+- **Specialist agents as separate runtimes.** The routing model and the closed
+  list are defined. `reference/specialists/` now defines each of the nine — job,
+  references received, tools, inherited approval levels, refusals — and
+  `docs/specialists.md` says when one earns a separate NanoClaw agent group
+  versus staying a skill Zi runs itself. Only `publishing`, and `events` at
+  volume, have an argument beyond tidiness. Nothing in the template forces
+  either.
+- **The activation surface.** The short onboarding flow and the deep link into a
+  chat channel are specified in `onboarding.md` as a contract. They are a web app
+  and cannot ship inside a template. `reference/onboarding/` is their shape: the
+  four screens as one self-contained page that makes no network request, and the
+  linking-token rules as code — short-lived, single-use, hashed at rest, never
+  logged, never accepted from message content. Zi's side — arriving in context
+  and never re-asking — is implemented in the template itself.
+
+### Open — contract defined, implementation not shipped
+
+- **Shared state across specialists.** NanoClaw isolates agent groups by design;
+  it provides no shared store between them. Cross-specialist state therefore
+  depends entirely on the data layer above — which is also why that layer is the
+  one deliberate crossing of the isolation boundary. A reference store does not
+  change this: two agent groups reading one unscoped store is one trust boundary
+  wearing two names. See `trust-model.md`.
+- **Tool discovery as a mechanism.** Today it is a discipline Zi follows, not a
+  runtime that filters a registry before the model sees it. Nothing in this
+  repository changes that, and nothing can: it needs a host that filters the
+  registry before the model sees it.
+- **Cross-channel identity.** One `user_id` across channels is specified, and the
+  reference data layer stores the channel identities against it. The linking
+  *service* that guarantees the same person resolves to the same `user_id` across
+  channels is not part of the template and is not referenced either.
+
+### Success measure
+
+Not "profile completed". **Time to first community value** — from discovery
+through onboarding to a relevant recommendation or a completed action. A finished
+profile that produced nothing is a failed onboarding.

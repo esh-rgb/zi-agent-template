@@ -2,7 +2,7 @@
 
 ## Before you start
 
-`community/zi/` is the source of truth. `build/` is generated — never edit it.
+`ops/zi/` is the source of truth. `build/` is generated — never edit it.
 Run `npm run build` after changing the canonical template, and commit the result;
 a test fails if the export is stale.
 
@@ -38,7 +38,7 @@ These encode the template's whole value. A change that weakens one will be decli
 
 ## Adding a skill
 
-`community/zi/skills/<name>/SKILL.md`, with YAML frontmatter carrying `name`
+`ops/zi/skills/<name>/SKILL.md`, with YAML frontmatter carrying `name`
 (matching the folder) and `description` (which drives auto-triggering, so write it
 for recognition, not for elegance). Under 500 lines; put anything longer in sibling
 files.
@@ -48,7 +48,7 @@ with a distinct trust boundary, tool set, or responsibility.
 
 ## Adding context
 
-`community/zi/ai.nanoco.nanoclaw/context/additional_context/<name>.md`, and
+`ops/zi/ai.nanoco.nanoclaw/context/additional_context/<name>.md`, and
 **reference it from `instructions.md`** — nothing under `context/` is auto-injected,
 so an unreferenced file is dead weight and CI will fail. Only `.md` files are copied
 into the agent workspace; a `.yaml` there is silently dropped, so config examples
@@ -59,7 +59,7 @@ cap it.
 
 ## Adding a task
 
-`community/zi/ai.nanoco.nanoclaw/tasks/<name>.md`. Frontmatter accepts **only**
+`ops/zi/ai.nanoco.nanoclaw/tasks/<name>.md`. Frontmatter accepts **only**
 `schedule` and `script` — anything else aborts the stamp. Five-field cron. Ungated
 tasks may fire at most four times in 24 hours.
 

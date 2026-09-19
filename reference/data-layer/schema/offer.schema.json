@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "offer",
+  "title": "Offer",
+  "description": "Something a person can give. Personal, and matching it to a Need is a recommendation -- never an introduction, and never a data transfer.",
+  "type": "object",
+  "required": ["offer_id", "user_id", "topic", "state", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "offer_id": { "$ref": "common#/$defs/id" },
+    "user_id": { "$ref": "common#/$defs/id" },
+    "community_id": { "$ref": "common#/$defs/id" },
+    "topic": { "type": "string", "minLength": 1 },
+    "detail": { "type": "string" },
+    "availability": { "type": "string" },
+    "state": { "type": "string", "enum": ["open", "paused", "withdrawn"] },
+    "provenance": { "$ref": "common#/$defs/provenance" }
+  }
+}

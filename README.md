@@ -16,10 +16,10 @@ community or organization.
 
 ```bash
 git clone https://github.com/esh-rgb/zi-agent-template
-cp -r zi-agent-template/community/zi /path/to/nanoclaw/templates/community/zi
+cp -r zi-agent-template/ops/zi /path/to/nanoclaw/templates/ops/zi
 
-ncl groups create --template community/zi --name "Zi Operator"
-ncl groups create --template community/zi --name "Zi Member"
+ncl groups create --template ops/zi --name "Zi Operator"
+ncl groups create --template ops/zi --name "Zi Member"
 ```
 
 On a NanoClaw install predating Agent Plugins support, point at the generated legacy
@@ -67,11 +67,12 @@ resource management · human routing · follow-up · recurring routines.
 explained recommendations · "add this to my calendar" with explicit confirmation ·
 human help on request · full control over what Zi remembers.
 
-## Nine skills
+## Eleven skills
 
-`trust-boundary` · `trusted-source-verification` · `community-brain` ·
-`content-adapter` · `human-handoff` · `calendar-action` · `referral-directory` ·
-`privacy-controls` · `budget-awareness`
+`intent-routing` · `trust-boundary` · `trusted-source-verification` ·
+`community-brain` · `content-adapter` · `human-handoff` · `calendar-action` ·
+`referral-directory` · `privacy-controls` · `onboarding-continuity` ·
+`budget-awareness`
 
 The Critic is deliberately **not** a skill — it lives in the always-loaded
 instructions so it cannot be skipped by failing to trigger.
@@ -93,6 +94,14 @@ Read this before relying on it.
 - **No credentials.** This template declares no MCP servers and needs no keys.
   Channels and tools are installed by NanoClaw's own skills.
 - Zi writes video scripts. It does not produce video.
+- **Parts of the architecture are contract, not shipped code.** A template ships
+  no database and no web app. The community data layer, the specialist
+  definitions and the onboarding/activation surface now have worked reference
+  implementations in [`reference/`](reference/) — **outside** the template,
+  optional, unsupported, and wired by the operator or not at all. Shared state
+  across specialists, tool discovery as a runtime mechanism, and cross-channel
+  identity remain open with nothing behind them. `docs/architecture.md` marks
+  precisely which is which.
 
 [`docs/trust-model.md`](docs/trust-model.md) states all of this in full.
 
@@ -104,18 +113,28 @@ Read this before relying on it.
 | [Trust model](docs/trust-model.md) | Guaranteed vs. behavioral, threats in and out of scope |
 | [VM deployment](docs/vm-deployment.md) | Exact install steps and troubleshooting |
 | [Demo scenarios](docs/demo-scenarios.md) | Five flows plus ten adversarial probes |
-| [Connector contract](connectors/contract/README.md) | How a connector must be declared |
+| [End-to-end scenario](docs/end-to-end-scenario.md) | One person, discovery through completed action |
+| [Quickstart](docs/quickstart.md) | The fifteen-minute path from clone to a working demo |
+| [Specialists](docs/specialists.md) | When a specialist earns its own agent group, and when it stays a skill |
+| [Connector contract](connectors/contract/README.md) | How a connector must be declared, with one worked example per approval class |
+| [Reference implementations](reference/) | Optional, unsupported: a community data layer, an activation surface, the nine specialist definitions |
+| [Registry submission](docs/registry-submission.md) | What publishing to the template registry would require, and the gate that comes first |
 | [Legal templates](docs/legal/) | Eleven engineering templates for review |
 
 ## Develop
 
 ```bash
-npm run check   # structural validation against both layouts
-npm run build   # regenerate build/legacy from the canonical source
-npm test        # 43 tests: structure, sync, secrets, defenses, policy invariants
+npm run check              # structural validation against both layouts
+npm run build              # regenerate build/legacy from the canonical source
+npm test                   # 94 tests: structure, sync, secrets, defenses, policy, references, docs
+npm run validate:reference # the reference data layer's seed against its schemas
 ```
 
-`community/zi/` is the source of truth. `build/` is generated — never edit it.
+No dependencies: scripts, tests and reference code use only the Node.js standard
+library, and that is worth keeping.
+
+`ops/zi/` is the source of truth. `build/` is generated — never edit it, and
+`reference/` is not part of the template.
 
 ## Make it yours
 

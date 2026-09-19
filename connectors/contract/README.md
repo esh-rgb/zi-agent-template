@@ -43,11 +43,24 @@ health: healthy | degraded | unavailable
    action. See the `trust-boundary` skill.
 7. **No credentials in prompts, memory, logs, examples, or fixtures.** Ever.
 
+## Worked examples
+
+One per approval class, each a complete declaration plus the failures specific to
+that shape. Read the class you are about to add.
+
+| Example | Class | Shape |
+|---|---|---|
+| [`search`](../examples/search.md) | A | Read-only. Everything it returns is untrusted, and retrieval is not verification |
+| [`calendar`](../examples/calendar.md) | B | The person, not the operator, authorizes each write |
+| [`messaging-draft`](../examples/messaging-draft.md) | C | Draft-only, on purpose. There is no send capability |
+| [`crm`](../examples/crm.md) | C | An operator-facing write, and the consent question it raises |
+| [`publishing`](../examples/publishing.md) | C, D to enable | The optional external scheduler. Not implemented |
+
 ## Milestone 1 scope
 
 - One conversational channel — installed by a NanoClaw channel skill.
 - One user-action connector — calendar. See `../examples/calendar.md`.
-- Everything else is contract only.
+- Everything else is contract only, including every other example above.
 
 Publishing connectors (social, email) are deliberately not implemented. Zi produces
 drafts; a human sends them through whatever the community already uses.

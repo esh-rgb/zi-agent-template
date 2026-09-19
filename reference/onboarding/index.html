@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Join — onboarding reference</title>
+<!--
+  Reference activation surface for the Zi community agent template.
+
+  Optional and unsupported. A NanoClaw template ships no web app, so this is the
+  *shape* of the four screens specified in `onboarding.md`, not a hosted product.
+  An operator supplies hosting, storage, token issuance and their own styling.
+
+  Deliberately self-contained: no script src, no stylesheet link, no font, no
+  analytics, no fetch, no beacon. Open it from the filesystem and it works, and
+  the network tab stays empty. It does not issue linking tokens either -- a
+  browser cannot hold that secret. Issuing and redeeming live server-side in
+  `deep-link.mjs`; this page hands its answers to that.
+
+  The goal is a person in a useful conversation in under a minute, not a complete
+  profile. If a field is not needed to make the first interaction useful, it does
+  not belong here.
+-->
+<style>
+  :root {
+    color-scheme: light dark;
+    --ink: #16181d;
+    --dim: #5b6270;
+    --line: #d9dce3;
+    --bg: #fbfbfc;
+    --card: #ffffff;
+    --accent: #2f5d50;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink:#e9ecf1; --dim:#9aa2b1; --line:#333846; --bg:#14161b; --card:#1c1f26; --accent:#7fc0ac; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2rem 1rem; background: var(--bg); color: var(--ink);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  main { max-width: 34rem; margin: 0 auto; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1.5rem; }
+  h1 { font-size: 1.35rem; margin: 0 0 .25rem; }
+  h2 { font-size: 1.1rem; margin: 0 0 1rem; }
+  p.lede { color: var(--dim); margin: 0 0 1.5rem; }
+  ol.steps { display: flex; gap: .5rem; list-style: none; padding: 0; margin: 0 0 1.5rem; }
+  ol.steps li {
+    flex: 1; height: 4px; border-radius: 2px; background: var(--line);
+  }
+  ol.steps li[aria-current] , ol.steps li.done { background: var(--accent); }
+  label { display: block; margin: 0 0 1rem; }
+  label > span { display: block; margin-bottom: .3rem; font-weight: 600; font-size: .92rem; }
+  input[type=text], select {
+    width: 100%; padding: .6rem .7rem; font: inherit; color: inherit;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+  }
+  fieldset { border: 0; padding: 0; margin: 0 0 1rem; }
+  legend { font-weight: 600; font-size: .92rem; margin-bottom: .5rem; padding: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .chips label {
+    margin: 0; padding: .4rem .7rem; border: 1px solid var(--line); border-radius: 999px;
+    cursor: pointer; font-size: .92rem; display: flex; gap: .4rem; align-items: center;
+  }
+  .chips label:has(input:checked) { border-color: var(--accent); color: var(--accent); }
+  .consent { border: 1px solid var(--line); border-radius: 8px; padding: .8rem; margin-bottom: 1rem; }
+  .consent label { display: flex; gap: .55rem; align-items: flex-start; margin: 0 0 .6rem; font-size: .95rem; }
+  .consent label:last-child { margin-bottom: 0; }
+  .consent span { font-weight: 400; }
+  nav { display: flex; justify-content: space-between; gap: .75rem; margin-top: 1.5rem; }
+  button {
+    font: inherit; padding: .6rem 1.1rem; border-radius: 8px; border: 1px solid var(--accent);
+    background: var(--accent); color: var(--card); cursor: pointer;
+  }
+  button.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  button[disabled] { opacity: .45; cursor: not-allowed; }
+  pre {
+    background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+    padding: .9rem; overflow-x: auto; font-size: .82rem; margin: 0 0 1rem;
+  }
+  .note { color: var(--dim); font-size: .85rem; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div class="card">
+    <h1>Join the community</h1>
+    <p class="lede">Four short questions. Under a minute.</p>
+
+    <ol class="steps" aria-hidden="true">
+      <li data-step="1" aria-current="step"></li><li data-step="2"></li>
+      <li data-step="3"></li><li data-step="4"></li>
+    </ol>
+
+    <form id="form" novalidate>
+      <!-- 1. Identity -->
+      <section data-screen="1">
+        <h2>Who are you?</h2>
+        <label><span>First name</span>
+          <input type="text" name="first_name" autocomplete="given-name" required>
+        </label>
+        <label><span>Preferred language</span>
+          <select name="preferred_language">
+            <option value="en">English</option>
+            <option value="pt">Português</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+          </select>
+        </label>
+      </section>
+
+      <!-- 2. Interests -->
+      <section data-screen="2" hidden>
+        <h2>What are you interested in?</h2>
+        <fieldset class="chips">
+          <legend>Pick as many as apply</legend>
+          <label><input type="checkbox" name="interests" value="community"> community and people</label>
+          <label><input type="checkbox" name="interests" value="events"> events</label>
+          <label><input type="checkbox" name="interests" value="work"> work</label>
+          <label><input type="checkbox" name="interests" value="housing"> housing</label>
+          <label><input type="checkbox" name="interests" value="language"> language learning</label>
+          <label><input type="checkbox" name="interests" value="admin"> admin and paperwork</label>
+          <label><input type="checkbox" name="interests" value="education"> education</label>
+          <label><input type="checkbox" name="interests" value="volunteering"> volunteering</label>
+          <label><input type="checkbox" name="interests" value="other"> something else</label>
+        </fieldset>
+      </section>
+
+      <!-- 3. Context -->
+      <section data-screen="3" hidden>
+        <h2>Where are you?</h2>
+        <label><span>Where you are, or where you are heading</span>
+          <input type="text" name="location" autocomplete="off">
+        </label>
+        <label><span>Where you are in this community</span>
+          <!--
+            journey_stage is deliberately generic. Every community defines its own
+            stages; replace these with yours rather than accepting the defaults.
+          -->
+          <select name="journey_stage">
+            <option value="">Prefer not to say</option>
+            <option value="curious">Just looking around</option>
+            <option value="arriving">Arriving soon</option>
+            <option value="settling">Settling in</option>
+            <option value="established">Been here a while</option>
+            <option value="contributing">Helping others</option>
+          </select>
+        </label>
+        <p class="note">Nothing else is asked here. A field with no product reason
+          behind it does not belong in onboarding.</p>
+      </section>
+
+      <!-- 4. Intent and consent -->
+      <section data-screen="4" hidden>
+        <h2>What would help right now?</h2>
+        <label><span>What are you looking for?</span>
+          <input type="text" name="looking_for" autocomplete="off">
+        </label>
+        <label><span>Anything you can offer others? (optional)</span>
+          <input type="text" name="can_offer" autocomplete="off">
+        </label>
+        <div class="consent">
+          <label>
+            <input type="checkbox" name="consent_personalization">
+            <span>Use what I said above to tailor what you show me.</span>
+          </label>
+          <label>
+            <input type="checkbox" name="consent_matching">
+            <span>Suggest people I could meet, and suggest me to them.</span>
+          </label>
+          <p class="note">Two separate permissions, on purpose. Neither is a
+            permission to share your details with anyone — that is asked
+            separately, each time, and you can withdraw either at any point.</p>
+        </div>
+      </section>
+
+      <!-- Handoff -->
+      <section data-screen="5" hidden>
+        <h2>That's everything</h2>
+        <p class="lede">This is what gets handed to the agent — nothing more.</p>
+        <pre id="payload" aria-live="polite"></pre>
+        <p class="note">
+          In a real deployment your server stores this, issues a short-lived
+          single-use linking token with <code>deep-link.mjs</code>, and sends the
+          person to the chat channel through a link carrying that token. This page
+          does neither: a browser cannot hold that secret, and this reference makes
+          no network requests at all.
+        </p>
+      </section>
+
+      <nav>
+        <button type="button" class="ghost" id="back" disabled>Back</button>
+        <button type="button" id="next">Continue</button>
+      </nav>
+    </form>
+  </div>
+</main>
+
+<script>
+  // No network, no storage, no analytics. Everything below is local to this page.
+  const form = document.getElementById('form');
+  const screens = [...form.querySelectorAll('[data-screen]')];
+  const dots = [...document.querySelectorAll('.steps li')];
+  const back = document.getElementById('back');
+  const next = document.getElementById('next');
+  const payload = document.getElementById('payload');
+  let at = 1;
+
+  function show(step) {
+    at = step;
+    screens.forEach((s) => { s.hidden = Number(s.dataset.screen) !== step; });
+    dots.forEach((d) => {
+      const n = Number(d.dataset.step);
+      d.classList.toggle('done', n < step);
+      if (n === step) d.setAttribute('aria-current', 'step');
+      else d.removeAttribute('aria-current');
+    });
+    back.disabled = step === 1 || step === 5;
+    next.hidden = step === 5;
+    next.textContent = step === 4 ? 'Finish' : 'Continue';
+  }
+
+  // The "minimum viable context" payload from onboarding.md. Enough to start a
+  // useful conversation, never a complete profile.
+  function answers() {
+    const data = new FormData(form);
+    return {
+      first_name: (data.get('first_name') || '').trim(),
+      preferred_language: data.get('preferred_language'),
+      location: (data.get('location') || '').trim() || null,
+      journey_stage: data.get('journey_stage') || null,
+      interests: data.getAll('interests'),
+      looking_for: (data.get('looking_for') || '').trim() || null,
+      can_offer: (data.get('can_offer') || '').trim() || null,
+      consent: {
+        personalized_recommendations: data.get('consent_personalization') === 'on',
+        matching: data.get('consent_matching') === 'on'
+      },
+      arrived_via: 'link'
+    };
+  }
+
+  next.addEventListener('click', () => {
+    if (at === 1 && !form.first_name.value.trim()) {
+      form.first_name.focus();
+      return;
+    }
+    if (at === 4) {
+      payload.textContent = JSON.stringify(answers(), null, 2);
+      show(5);
+      return;
+    }
+    show(at + 1);
+  });
+
+  back.addEventListener('click', () => show(at - 1));
+  form.addEventListener('submit', (e) => e.preventDefault());
+  show(1);
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
  * Generate the legacy NanoClaw template layout from the canonical Agent Plugins
  * source, so one persona serves both.
  *
- *   canonical  community/zi/{plugin.json,mcp.json,skills/,ai.nanoco.nanoclaw/{context,tasks}}
+ *   canonical  ops/zi/{plugin.json,mcp.json,skills/,ai.nanoco.nanoclaw/{context,tasks}}
  *   legacy     build/legacy/zi/{.mcp.json,skills/,context/,tasks/}
  *
  * The legacy layout is what NanoClaw forks predating Agent Plugins support parse
@@ -16,7 +16,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-export const CANONICAL = path.join(root, 'community', 'zi');
+export const CANONICAL = path.join(root, 'ops', 'zi');
 export const LEGACY = path.join(root, 'build', 'legacy', 'zi');
 
 /** Copy a file, creating parent directories. Byte-identical, no transformation. */
@@ -61,9 +61,9 @@ export function exportLegacy(outRoot = path.join(root, 'build', 'legacy')) {
     [
       '# Generated — do not edit',
       '',
-      'Legacy-layout export of `community/zi`, for NanoClaw installs that predate',
+      'Legacy-layout export of `ops/zi`, for NanoClaw installs that predate',
       'Agent Plugins template support. Regenerate with `node scripts/export-legacy.mjs`.',
-      'Edit the canonical source under `community/zi/` instead; edits here are',
+      'Edit the canonical source under `ops/zi/` instead; edits here are',
       'overwritten and will fail the sync test.',
       '',
       'Stamp it with:',

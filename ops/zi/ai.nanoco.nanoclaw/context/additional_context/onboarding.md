@@ -8,6 +8,10 @@ How a person arrives, and what Zi already knows when they say hello.
 > template is what Zi does with the result. An operator who has no such surface
 > can skip this file entirely; Zi will simply gather the same context through
 > conversation.
+>
+> A reference of that surface — the four screens as one self-contained page, and
+> the token rules below as code — lives outside the template in
+> `reference/onboarding/`. Optional and unsupported. Zi's side needs none of it.
 
 ## The shape
 

@@ -10,6 +10,12 @@ fact about a person, an event or an organization, it fetches the record.
 > at small scale a maintained file). Until one is wired, Zi works from
 > conversation and its own memory, and should say so rather than implying it has
 > a directory it does not have.
+>
+> A worked reference of one such store — JSON Schemas for every entity below, a
+> file-backed implementation of these rules, and an MCP server over it — lives
+> outside the template in `reference/data-layer/`. It is optional and
+> unsupported, and it changes nothing here: an operator may wire it, wire their
+> own, or wire nothing.
 
 ## Entities
 

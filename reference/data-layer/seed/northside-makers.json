@@ -1,0 +1,329 @@
+{
+  "community": [
+    {
+      "community_id": "com_northside",
+      "name": "Northside Makers",
+      "one_line": "People who build physical things in the north of the city.",
+      "topics": ["woodwork", "electronics", "3d-printing", "repair"],
+      "languages": ["en"],
+      "timezone": "Europe/Lisbon",
+      "location_id": "loc_northside",
+      "journey_stages": ["curious", "attending", "building", "teaching"],
+      "provenance": {
+        "source": "operator configuration",
+        "source_kind": "operator",
+        "recorded_at": "2026-02-01T09:00:00Z"
+      }
+    }
+  ],
+  "location": [
+    {
+      "location_id": "loc_northside",
+      "name": "North side",
+      "region": "Lisbon",
+      "country": "PT",
+      "provenance": {
+        "source": "operator configuration",
+        "source_kind": "operator",
+        "recorded_at": "2026-02-01T09:00:00Z"
+      }
+    }
+  ],
+  "person": [
+    {
+      "user_id": "usr_sam",
+      "display_name": "Sam",
+      "preferred_language": "en",
+      "languages": ["en", "pt"],
+      "location_id": "loc_northside",
+      "journey_stage": "teaching",
+      "interests": ["woodwork", "repair"],
+      "community_ids": ["com_northside"],
+      "channel_identities": [
+        { "channel": "whatsapp-main", "handle_ref": "ch_sam_wa", "linked_at": "2026-02-01T09:10:00Z" }
+      ],
+      "personalization": "opt_in",
+      "consent_ids": ["cns_sam_personalization"],
+      "provenance": {
+        "source": "operator configuration",
+        "source_kind": "operator",
+        "recorded_at": "2026-02-01T09:10:00Z"
+      }
+    },
+    {
+      "user_id": "usr_dana",
+      "display_name": "Dana",
+      "preferred_language": "en",
+      "languages": ["en"],
+      "location_id": "loc_northside",
+      "journey_stage": "building",
+      "interests": ["electronics"],
+      "community_ids": ["com_northside"],
+      "channel_identities": [
+        { "channel": "whatsapp-main", "handle_ref": "ch_dana_wa", "linked_at": "2026-02-01T09:12:00Z" }
+      ],
+      "personalization": "opt_in",
+      "consent_ids": ["cns_dana_matching"],
+      "provenance": {
+        "source": "operator configuration",
+        "source_kind": "operator",
+        "recorded_at": "2026-02-01T09:12:00Z"
+      }
+    },
+    {
+      "user_id": "usr_rae",
+      "display_name": "Rae",
+      "preferred_language": "en",
+      "location_id": "loc_northside",
+      "journey_stage": "curious",
+      "interests": ["3d-printing", "electronics"],
+      "community_ids": ["com_northside"],
+      "personalization": "opt_out",
+      "provenance": {
+        "source": "onboarding form",
+        "source_kind": "member",
+        "recorded_at": "2026-02-14T18:30:00Z"
+      }
+    }
+  ],
+  "organization": [
+    {
+      "organization_id": "org_toolshare",
+      "name": "Northside Tool Library",
+      "type": "community_service",
+      "topics": ["repair", "tools"],
+      "languages": ["en", "pt"],
+      "location_id": "loc_northside",
+      "contact_ref": "org_toolshare_contact",
+      "status": "VERIFIED",
+      "provenance": {
+        "source": "operator introduction",
+        "source_kind": "operator",
+        "recorded_at": "2026-02-03T11:00:00Z",
+        "verified_by": "Dana",
+        "verified_at": "2026-02-04T10:15:00Z"
+      }
+    }
+  ],
+  "event": [
+    {
+      "event_id": "evt_solder_night",
+      "community_id": "com_northside",
+      "title": "Soldering basics, hands on",
+      "date": "2026-03-12",
+      "start_time": "19:00",
+      "end_time": "21:00",
+      "timezone": "Europe/Lisbon",
+      "location_id": "loc_northside",
+      "audience": "beginners, no experience needed",
+      "organizer": "Sam",
+      "how_to_attend": "Reply in the main group to reserve one of twelve benches.",
+      "languages": ["en"],
+      "topics": ["electronics"],
+      "status": "VERIFIED",
+      "provenance": {
+        "source": "organizers-group",
+        "source_kind": "trusted_source",
+        "recorded_at": "2026-02-20T08:00:00Z",
+        "verified_by": "Dana",
+        "verified_at": "2026-02-21T09:30:00Z"
+      }
+    },
+    {
+      "event_id": "evt_repair_cafe",
+      "community_id": "com_northside",
+      "title": "Repair cafe",
+      "date": "2026-03-21",
+      "start_time": "10:00",
+      "audience": "anyone with something broken",
+      "organizer": "Northside Tool Library",
+      "how_to_attend": "Just turn up.",
+      "topics": ["repair"],
+      "status": "NEEDS_INFO",
+      "missing_fields": ["location_id", "end_time"],
+      "provenance": {
+        "source": "organizers-group",
+        "source_kind": "trusted_source",
+        "recorded_at": "2026-03-01T12:00:00Z"
+      }
+    }
+  ],
+  "opportunity": [
+    {
+      "opportunity_id": "opp_workshop_host",
+      "community_id": "com_northside",
+      "organization_id": "org_toolshare",
+      "title": "Host a monthly repair session",
+      "topic": "volunteering",
+      "audience": "members comfortable teaching a small group",
+      "location_id": "loc_northside",
+      "languages": ["en"],
+      "valid_until": "2026-06-30",
+      "how_to_apply": "Ask an operator to introduce you.",
+      "status": "VERIFIED",
+      "provenance": {
+        "source": "org_toolshare",
+        "source_kind": "trusted_source",
+        "recorded_at": "2026-02-25T14:00:00Z",
+        "verified_by": "Dana",
+        "verified_at": "2026-02-26T09:00:00Z"
+      }
+    }
+  ],
+  "need": [
+    {
+      "need_id": "ned_rae_printer",
+      "user_id": "usr_rae",
+      "community_id": "com_northside",
+      "topic": "3d-printing",
+      "detail": "Looking for someone who can show me how to level a printer bed.",
+      "urgency": "low",
+      "state": "open",
+      "provenance": {
+        "source": "member conversation",
+        "source_kind": "member",
+        "recorded_at": "2026-02-14T18:35:00Z"
+      }
+    }
+  ],
+  "offer": [
+    {
+      "offer_id": "ofr_dana_electronics",
+      "user_id": "usr_dana",
+      "community_id": "com_northside",
+      "topic": "electronics",
+      "detail": "Happy to walk someone through a first circuit.",
+      "availability": "weekday evenings",
+      "state": "open",
+      "provenance": {
+        "source": "member conversation",
+        "source_kind": "member",
+        "recorded_at": "2026-02-10T20:00:00Z"
+      }
+    }
+  ],
+  "content": [
+    {
+      "content_id": "cnt_solder_night",
+      "community_id": "com_northside",
+      "title": "Soldering basics, hands on",
+      "core": "Soldering basics, 12 March 2026, 19:00-21:00, north side. Beginners welcome, no experience needed. Twelve benches, reserve in the main group.",
+      "about": ["evt_solder_night"],
+      "renderings": [
+        {
+          "channel": "whatsapp-main",
+          "body": "Soldering basics, Thu 12 March, 19:00. Beginners welcome. Twelve benches -- reply here to take one."
+        },
+        {
+          "channel": "newsletter",
+          "body": "Soldering basics, hands on. Thursday 12 March, 19:00-21:00, north side. No experience needed; every bench has a kit. Twelve places, first come. Reply in the main group to reserve."
+        }
+      ],
+      "status": "READY_FOR_REVIEW",
+      "provenance": {
+        "source": "evt_solder_night",
+        "source_kind": "operator",
+        "recorded_at": "2026-02-21T10:00:00Z"
+      }
+    }
+  ],
+  "conversation": [
+    {
+      "conversation_id": "cnv_rae_intro",
+      "channel": "whatsapp-main",
+      "community_id": "com_northside",
+      "participant_ids": ["usr_rae"],
+      "opened_at": "2026-02-14T18:30:00Z",
+      "last_activity_at": "2026-02-14T18:41:00Z",
+      "provenance": {
+        "source": "whatsapp-main",
+        "source_kind": "member",
+        "recorded_at": "2026-02-14T18:41:00Z"
+      }
+    }
+  ],
+  "relationship": [
+    {
+      "relationship_id": "rel_sam_northside",
+      "type": "member_of",
+      "from_id": "usr_sam",
+      "to_id": "com_northside",
+      "established_by": "operator",
+      "provenance": {
+        "source": "operator configuration",
+        "source_kind": "operator",
+        "recorded_at": "2026-02-01T09:10:00Z"
+      }
+    },
+    {
+      "relationship_id": "rel_toolshare_partner",
+      "type": "partner_of",
+      "from_id": "org_toolshare",
+      "to_id": "com_northside",
+      "established_by": "verified",
+      "provenance": {
+        "source": "operator introduction",
+        "source_kind": "operator",
+        "recorded_at": "2026-02-04T10:15:00Z",
+        "verified_by": "Dana",
+        "verified_at": "2026-02-04T10:15:00Z"
+      }
+    }
+  ],
+  "consent": [
+    {
+      "consent_id": "cns_sam_personalization",
+      "user_id": "usr_sam",
+      "purpose": "personalized_recommendations",
+      "scope": ["interests", "location_id", "journey_stage"],
+      "granted_at": "2026-02-01T09:10:00Z",
+      "provenance": {
+        "source": "onboarding form",
+        "source_kind": "member",
+        "recorded_at": "2026-02-01T09:10:00Z"
+      }
+    },
+    {
+      "consent_id": "cns_dana_matching",
+      "user_id": "usr_dana",
+      "purpose": "matching",
+      "scope": ["interests", "offer_id"],
+      "granted_at": "2026-02-10T20:00:00Z",
+      "provenance": {
+        "source": "member conversation",
+        "source_kind": "member",
+        "recorded_at": "2026-02-10T20:00:00Z"
+      }
+    },
+    {
+      "consent_id": "cns_dana_intro_expired",
+      "user_id": "usr_dana",
+      "purpose": "introduction",
+      "scope": ["display_name"],
+      "recipient_ref": "usr_rae",
+      "granted_at": "2026-01-05T10:00:00Z",
+      "withdrawn_at": "2026-01-20T10:00:00Z",
+      "provenance": {
+        "source": "member conversation",
+        "source_kind": "member",
+        "recorded_at": "2026-01-20T10:00:00Z"
+      }
+    }
+  ],
+  "task": [
+    {
+      "task_id": "tsk_repair_cafe_details",
+      "community_id": "com_northside",
+      "title": "Get the venue and end time for the repair cafe before it can be verified",
+      "owner": "Dana",
+      "about": ["evt_repair_cafe"],
+      "state": "open",
+      "follow_up_on": "2026-03-08",
+      "provenance": {
+        "source": "stale-content-review",
+        "source_kind": "operator",
+        "recorded_at": "2026-03-01T12:05:00Z"
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "need",
+  "title": "Need",
+  "description": "Something a person is looking for. Personal: never surfaced to another person without a Consent record for that purpose.",
+  "type": "object",
+  "required": ["need_id", "user_id", "topic", "state", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "need_id": { "$ref": "common#/$defs/id" },
+    "user_id": { "$ref": "common#/$defs/id" },
+    "community_id": { "$ref": "common#/$defs/id" },
+    "topic": { "type": "string", "minLength": 1 },
+    "detail": { "type": "string" },
+    "urgency": { "type": "string", "enum": ["low", "normal", "high"] },
+    "state": { "type": "string", "enum": ["open", "matched", "met", "withdrawn"] },
+    "provenance": { "$ref": "common#/$defs/provenance" }
+  }
+}

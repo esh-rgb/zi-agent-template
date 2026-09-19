@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "organization",
+  "title": "Organization",
+  "description": "A partner, employer, service or institution. Reaching one is a Level C action.",
+  "type": "object",
+  "required": ["organization_id", "name", "status", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "organization_id": { "$ref": "common#/$defs/id" },
+    "name": { "type": "string", "minLength": 1 },
+    "type": { "type": "string" },
+    "topics": { "$ref": "common#/$defs/topics" },
+    "languages": { "$ref": "common#/$defs/languages" },
+    "location_id": { "$ref": "common#/$defs/id" },
+    "contact_ref": {
+      "type": "string",
+      "description": "How an operator reaches them. Zi drafts; a human sends."
+    },
+    "status": { "$ref": "common#/$defs/status" },
+    "provenance": { "$ref": "common#/$defs/provenance" }
+  }
+}

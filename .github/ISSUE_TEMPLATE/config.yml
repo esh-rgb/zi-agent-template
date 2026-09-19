@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security issue
+    url: https://github.com/esh-rgb/zi-agent-template/blob/main/SECURITY.md
+    about: Do not open a public issue for a security problem. Follow SECURITY.md.
+  - name: What this template does and does not guarantee
+    url: https://github.com/esh-rgb/zi-agent-template/blob/main/docs/trust-model.md
+    about: Read the trust model before reporting that a behavioral control is not enforcement — that is documented, not a bug.

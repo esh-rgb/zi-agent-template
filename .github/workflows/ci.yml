@@ -24,5 +24,8 @@ jobs:
           git diff --exit-code build/ \
             || (echo "build/legacy is stale — run 'npm run build' and commit"; exit 1)
 
+      - name: Validate the reference implementations
+        run: npm run validate:reference
+
       - name: Test
         run: npm test
